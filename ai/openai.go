@@ -43,15 +43,17 @@ func generatePrompt(ctx context.Context, data string) string {
 	prompt := fmt.Sprintf(`
 		Please compose an email that contains the relevant events in this data: %s
 		
-		The email is for an out-of-work software engineer looking for networking and business opportunities.
+		The email is for a male software engineer looking for networking and business opportunities.
+		Focus on technology focused events that can be technical in nature or socializing with others
+		in the tech industry.
 		
 		Requirements:
 		- Include event links to make navigation easy
-		- List events in chronological order  
+		- List events in chronological order based on when they will occur and include the date and time for each event included
+		- Use HTML tags where relevant, (there is no Markdown parsing) like for the links as an example
 		- Provide brief explanations for why each event was included
-		- Use ONLY standard ASCII characters (no smart quotes, em dashes, special punctuation)
-		- Use regular quotes ("), hyphens (-), and normal spaces
 		- Keep the tone professional but friendly
+		- Do not include a closing that needs a name or if you do use "Your friendly AI"
 	`, data)
 
 	return prompt
