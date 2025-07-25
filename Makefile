@@ -9,3 +9,5 @@ push-image:
 run-docker:
 	docker run --rm -v "$(DATA_DIR):/data" --env-file .env amiranda/meetup-emailer
 
+create-env:
+	cp .env.example .env
