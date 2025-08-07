@@ -14,3 +14,12 @@ create-env:
 
 test:
 	go test -tags=unit ./...
+
+install-mockery:
+	go install github.com/vektra/mockery/v2@latest
+
+generate-mocks:
+	go generate ./...
+
+clean-mocks:
+	rm -rf **/mocks

@@ -8,6 +8,8 @@ import (
 	"github.com/openai/openai-go/option"
 )
 
+//go:generate mockery --name Completer --output ./mocks --outpkg mocks
+
 type Completer interface {
 	GenerateCompletion(ctx context.Context, prompt string) (string, error)
 }

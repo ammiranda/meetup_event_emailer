@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+//go:generate mockery --name EmailSender --output ./mocks --outpkg mocks
+
 type EmailSender interface {
 	SendMail(addr string, a smtp.Auth, from string, to []string, msg []byte) error
 }
