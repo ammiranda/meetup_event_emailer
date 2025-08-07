@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/smtp"
+	"strings"
 )
 
 type Mailer struct {
@@ -31,14 +32,16 @@ func NewMailer(
 }
 
 // SendHTMLEmail sends an HTML compliant email.
-func (m *Mailer) SendHTMLEmail(ctx context.Context, to string, subject string, htmlBody string) error {
+func (m *Mailer) SendHTMLEmail(ctx context.Context, subject string, htmlBody string) error {
 	smtpHost := m.SMTPHost
 	smtpPort := m.SMTPPort
 	smtpUser := m.SMTPUser
 	smtpPassword := m.SMTPPassword
 	smtpReceipents := m.SMTPReceipents
 
-	message := fmt.Appendf([]byte{}, "To: %s\nSubject: %s\n\n%s", to, subject, htmlBody)
+	smtpReceipentsString := strings.Join(smtpReceipents, ", ")
+
+	message := fmt.Appendf([]byte{}, "To: %s\nSubject: %s\n\n%s", smtpReceipentsString, subject, htmlBody)
 
 	auth := smtp.PlainAuth("", smtpUser, smtpPassword, smtpHost)
 

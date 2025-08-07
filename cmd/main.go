@@ -45,7 +45,7 @@ func main() {
 
 	mailer := mailer.NewMailer(config.SMTPHost, config.SMTPPort, config.SMTPUser, config.SMTPPassword, config.SMTPReceipents)
 
-	err = mailer.SendHTMLEmail(context.Background(), "alexandermichaelmiranda@gmail.com", "Daily Networking Meetups", email)
+	err = mailer.SendHTMLEmail(context.Background(), "Daily Networking Meetups", email)
 	if err != nil {
 		log.Fatalf("Error sending email: %v", err)
 	}
