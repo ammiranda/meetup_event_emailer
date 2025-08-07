@@ -8,34 +8,46 @@ import (
 	"github.com/openai/openai-go/option"
 )
 
+//go:generate mockery --name Completer --output ./mocks --outpkg mocks
+
+type Completer interface {
+	GenerateCompletion(ctx context.Context, prompt string) (string, error)
+}
+
 type OpenAI struct {
-	Client *openai.Client
+	Completer Completer
 }
 
-// NewOpenAI creates a new OpenAI client
+type RealCompleter struct {
+	client *openai.Client
+}
+
 func NewOpenAI(ctx context.Context, apiKey string) *OpenAI {
-	client := openai.NewClient(
-		option.WithAPIKey(apiKey),
-	)
-	return &OpenAI{Client: &client}
+	client := openai.NewClient(option.WithAPIKey(apiKey))
+	return &OpenAI{
+		Completer: &RealCompleter{client: &client},
+	}
 }
 
-// GenerateEmail generates email markup based on the data provided
-func (o *OpenAI) GenerateEmailBody(ctx context.Context, data string) (string, error) {
-	prompt := generatePrompt(ctx, data)
-
-	response, err := o.Client.Chat.Completions.New(ctx, openai.ChatCompletionNewParams{
+func (r *RealCompleter) GenerateCompletion(ctx context.Context, prompt string) (string, error) {
+	params := openai.ChatCompletionNewParams{
 		Model: openai.ChatModelGPT3_5Turbo,
 		Messages: []openai.ChatCompletionMessageParamUnion{
 			openai.UserMessage(prompt),
 		},
 		Seed: openai.Int(0),
-	})
+	}
+	resp, err := r.client.Chat.Completions.New(ctx, params)
 	if err != nil {
 		return "", err
 	}
+	return resp.Choices[0].Message.Content, nil
+}
 
-	return response.Choices[0].Message.Content, nil
+// GenerateEmail generates email markup based on the data provided
+func (o *OpenAI) GenerateEmailBody(ctx context.Context, data string) (string, error) {
+	prompt := generatePrompt(ctx, data)
+	return o.Completer.GenerateCompletion(ctx, prompt)
 }
 
 // generatePrompt generates a prompt for the OpenAI API

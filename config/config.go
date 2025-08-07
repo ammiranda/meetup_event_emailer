@@ -6,6 +6,16 @@ import (
 	"strings"
 )
 
+const (
+	EnvJSONFilePath   = "JSON_FILE_PATH"
+	EnvOpenAIAPIKey   = "OPENAI_API_KEY"
+	EnvSMTPHost       = "SMTP_HOST"
+	EnvSMTPPort       = "SMTP_PORT"
+	EnvSMTPUser       = "SMTP_USER"
+	EnvSMTPPassword   = "SMTP_PASSWORD"
+	EnvSMTPReceipents = "SMTP_RECEIPENTS"
+)
+
 type Config struct {
 	JSONFilePath   string   `json:"json_file_path"`
 	OpenAIAPIKey   string   `json:"openai_api_key"`
@@ -17,39 +27,39 @@ type Config struct {
 }
 
 func LoadConfig() (*Config, error) {
-	jsonFilePath, ok := os.LookupEnv("JSON_FILE_PATH")
+	jsonFilePath, ok := os.LookupEnv(EnvJSONFilePath)
 	if !ok || jsonFilePath == "" {
-		return nil, fmt.Errorf("JSON_FILE_PATH environment variable is not set")
+		return nil, fmt.Errorf("%s environment variable is not set", EnvJSONFilePath)
 	}
 
-	openAIAPIKey, ok := os.LookupEnv("OPENAI_API_KEY")
+	openAIAPIKey, ok := os.LookupEnv(EnvOpenAIAPIKey)
 	if !ok || openAIAPIKey == "" {
-		return nil, fmt.Errorf("OPENAI_API_KEY environment variable is not set")
+		return nil, fmt.Errorf("%s environment variable is not set", EnvOpenAIAPIKey)
 	}
 
-	smtpHost, ok := os.LookupEnv("SMTP_HOST")
+	smtpHost, ok := os.LookupEnv(EnvSMTPHost)
 	if !ok || smtpHost == "" {
-		return nil, fmt.Errorf("SMTP_HOST environment variable is not set")
+		return nil, fmt.Errorf("%s environment variable is not set", EnvSMTPHost)
 	}
 
-	smtpPort, ok := os.LookupEnv("SMTP_PORT")
+	smtpPort, ok := os.LookupEnv(EnvSMTPPort)
 	if !ok || smtpPort == "" {
-		return nil, fmt.Errorf("SMTP_PORT environment variable is not set")
+		return nil, fmt.Errorf("%s environment variable is not set", EnvSMTPPort)
 	}
 
-	smtpUser, ok := os.LookupEnv("SMTP_USER")
+	smtpUser, ok := os.LookupEnv(EnvSMTPUser)
 	if !ok || smtpUser == "" {
-		return nil, fmt.Errorf("SMTP_USER environment variable is not set")
+		return nil, fmt.Errorf("%s environment variable is not set", EnvSMTPUser)
 	}
 
-	smtpPassword, ok := os.LookupEnv("SMTP_PASSWORD")
+	smtpPassword, ok := os.LookupEnv(EnvSMTPPassword)
 	if !ok || smtpPassword == "" {
-		return nil, fmt.Errorf("SMTP_PASSWORD environment variable is not set")
+		return nil, fmt.Errorf("%s environment variable is not set", EnvSMTPPassword)
 	}
 
-	smtpReceipentsRaw, ok := os.LookupEnv("SMTP_RECEIPENTS")
+	smtpReceipentsRaw, ok := os.LookupEnv(EnvSMTPReceipents)
 	if !ok || smtpReceipentsRaw == "" {
-		return nil, fmt.Errorf("SMTP_RECEIPENTS environment variable is not set")
+		return nil, fmt.Errorf("%s environment variable is not set", EnvSMTPReceipents)
 	}
 
 	smtpReceipents := strings.Split(smtpReceipentsRaw, ",")
