@@ -11,3 +11,6 @@ run-docker:
 
 create-env:
 	cp .env.example .env
+
+test:
+	go test -tags=unit ./...
